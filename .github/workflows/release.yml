@@ -113,7 +113,7 @@ jobs:
           Package: crisper
           Version: ${VERSION}
           Architecture: amd64
-          Depends: libgtk-3-0 (>= 3.22), libwebkit2gtk-4.1-0 (>= 2.40)
+          Depends: libgtk-3-0 (>= 3.22), libwebkit2gtk-4.1-0 (>= 2.40), ffmpeg
           Maintainer: psychosomat <hello@ddark.dev>
           Description: Local video transcription with speaker diarization
            Crisper is a desktop application for transcribing video to Markdown

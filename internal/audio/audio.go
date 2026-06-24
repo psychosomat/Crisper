@@ -7,7 +7,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
+	"sync"
 )
 
 type Video struct {
@@ -16,7 +18,64 @@ type Video struct {
 	Size int64
 }
 
+var ffmpegCache struct {
+	mu  sync.Mutex
+	path string
+	ok   bool
+}
+
+func FindFFmpeg() (string, error) {
+	ffmpegCache.mu.Lock()
+	defer ffmpegCache.mu.Unlock()
+
+	if ffmpegCache.ok {
+		return ffmpegCache.path, nil
+	}
+
+	if p, err := exec.LookPath("ffmpeg"); err == nil {
+		ffmpegCache.path = p
+		ffmpegCache.ok = true
+		return p, nil
+	}
+
+	home, _ := os.UserHomeDir()
+	exe, _ := os.Executable()
+	appDir := filepath.Dir(exe)
+
+	binName := "ffmpeg"
+	if runtime.GOOS == "windows" {
+		binName = "ffmpeg.exe"
+	}
+
+	candidates := []string{
+		filepath.Join(appDir, binName),
+		filepath.Join(home, ".local", "bin", "ffmpeg"),
+		"/usr/bin/ffmpeg",
+		"/usr/local/bin/ffmpeg",
+		"/opt/homebrew/bin/ffmpeg",
+		"/snap/bin/ffmpeg",
+	}
+	for _, p := range candidates {
+		if _, err := os.Stat(p); err == nil {
+			ffmpegCache.path = p
+			ffmpegCache.ok = true
+			return p, nil
+		}
+	}
+
+	return "", fmt.Errorf(
+		"ffmpeg not found.\n\nInstall ffmpeg:\n" +
+			"  Linux:   sudo apt install ffmpeg / sudo pacman -S ffmpeg\n" +
+			"  macOS:   brew install ffmpeg\n" +
+			"  Windows: https://ffmpeg.org/download.html")
+}
+
 func ExtractAudio(ctx context.Context, videoPath string, tmpDir string) (string, error) {
+	ffmpegPath, err := FindFFmpeg()
+	if err != nil {
+		return "", err
+	}
+
 	base := filepath.Base(videoPath)
 	ext := filepath.Ext(base)
 	name := base[:len(base)-len(ext)]
@@ -37,7 +96,7 @@ func ExtractAudio(ctx context.Context, videoPath string, tmpDir string) (string,
 
 	args = append(args, wavPath)
 
-	cmd := exec.Command("ffmpeg", args...)
+	cmd := exec.Command(ffmpegPath, args...)
 	setSysProcAttr(cmd)
 
 	stderr, _ := cmd.StderrPipe()

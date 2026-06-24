@@ -4,6 +4,7 @@ pkgbase = crisper-bin
 	arch = x86_64
 	depends = gtk3
 	depends = webkit2gtk-4.1
+	depends = ffmpeg
 	maintainer = psychosomat <hello@ddark.dev>
 	pkgdesc = Local video transcription with speaker diarization
 	url = https://github.com/aspect-apps/Crisper
