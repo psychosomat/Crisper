@@ -15,6 +15,8 @@ cp packaging/aur/PKGBUILD "$WORKDIR/"
 cp packaging/aur/.SRCINFO "$WORKDIR/"
 
 cd "$WORKDIR"
+git config user.name "psychosomat"
+git config user.email "hello@ddark.dev"
 git add PKGBUILD .SRCINFO
 git commit -m "Update to ${VERSION}"
 git push origin HEAD
