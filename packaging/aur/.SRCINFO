@@ -1,0 +1,16 @@
+pkgbase = crisper-bin
+	pkgver = 1.0.0
+	pkgrel = 1
+	arch = x86_64
+	depends = gtk3
+	depends = webkit2gtk-4.1
+	maintainer = psychosomat <hello@ddark.dev>
+	pkgdesc = Local video transcription with speaker diarization
+	url = https://github.com/aspect-apps/Crisper
+	license = MIT
+	provides = crisper
+	conflicts = crisper
+	source = https://example.com/test.tar.gz
+	sha256sums = abc123
+
+	pkgname = crisper-bin

@@ -1,0 +1,29 @@
+# Maintainer: psychosomat <hello@ddark.dev>
+pkgname=crisper-bin
+pkgver=1.0.0
+pkgrel=1
+pkgdesc='Local video transcription with speaker diarization'
+arch=('x86_64')
+url='https://github.com/aspect-apps/Crisper'
+license=('MIT')
+depends=('gtk3' 'webkit2gtk-4.1')
+provides=('crisper')
+conflicts=('crisper')
+source=("https://example.com/test.tar.gz")
+sha256sums=('abc123')
+
+package() {
+    install -Dm755 Crisper "${pkgdir}/usr/bin/Crisper"
+    install -Dm644 appicon.png "${pkgdir}/usr/share/icons/hicolor/256x256/apps/crisper.png"
+
+    mkdir -p "${pkgdir}/usr/share/applications"
+    cat > "${pkgdir}/usr/share/applications/crisper.desktop" << EOF2
+[Desktop Entry]
+Type=Application
+Name=Crisper
+Exec=/usr/bin/Crisper
+Icon=crisper
+Categories=AudioVideo;Audio;
+Terminal=false
+EOF2
+}
