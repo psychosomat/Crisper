@@ -136,11 +136,19 @@ func findOrInstallWhisper() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf(
-		"whisper-cli not found.\n\nInstall from https://github.com/ggerganov/whisper.cpp:\n" +
-			"  git clone https://github.com/ggerganov/whisper.cpp\n" +
-			"  cd whisper.cpp && cmake -B build && cmake --build build --config Release\n" +
-			"  sudo cp build/bin/whisper-cli /usr/local/bin/")
+	return "", whisperNotFoundErr()
+}
+
+func whisperNotFoundErr() error {
+	if runtime.GOOS == "darwin" {
+		return fmt.Errorf(
+			"whisper-cli not found.\n\n" +
+				"Run:\n" +
+				"  brew install whisper-cpp")
+	}
+	return fmt.Errorf(
+		"whisper-cli not found.\n\n" +
+			"Install from https://github.com/ggerganov/whisper.cpp")
 }
 
 func binaryName() string {

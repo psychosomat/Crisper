@@ -87,9 +87,8 @@ func DownloadWhisperCLI(destDir string, progress func(downloaded, total int64)) 
 	spec, ok := supportedPlatform()
 	if !ok {
 		return "", fmt.Errorf("no pre-built whisper-cli for %s/%s\n"+
-			"Install manually:\n"+
-			"  macOS: brew install whisper-cpp\n"+
-			"  Other: https://github.com/ggml-org/whisper.cpp", runtime.GOOS, runtime.GOARCH)
+			"Install:\n"+
+			"  brew install whisper-cpp", runtime.GOOS, runtime.GOARCH)
 	}
 
 	if err := os.MkdirAll(destDir, 0755); err != nil {

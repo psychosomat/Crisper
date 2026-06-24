@@ -30,7 +30,20 @@
 ## Requirements
 
 - [ffmpeg](https://ffmpeg.org)
-- [whisper-cli](https://github.com/ggerganov/whisper.cpp) (in PATH or at `~/.local/bin/whisper-cli`)
+- [whisper-cli](https://github.com/ggerganov/whisper.cpp)
+
+### macOS
+
+```bash
+./scripts/setup-macos.sh
+```
+
+### Linux
+
+```bash
+sudo apt install ffmpeg
+sudo apt install whisper-cpp
+```
 
 ## Quick Start
 
